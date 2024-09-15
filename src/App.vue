@@ -1,26 +1,81 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <div class="sidebar-container">
+      <TheSidebar
+        :timeFrame="currentTimeFrame"
+        @changed-timeFrame="$event => currentTimeFrame = $event"
+      />
+    </div>
+    <div class="cards-container">
+      <DashboardCard
+        v-for="timeFrame in timeFrames" :key="timeFrame.title"
+        :timeFrame="timeFrame"
+        :period="currentTimeFrame ? currentTimeFrame : 'daily'"
+        :imageSrc="`./assets/images/job.svg`"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import DashboardCard from './components/DashboardCard.vue'
+import TheSidebar from './components/TheSidebar.vue'
+import { timeFrames } from './assets/data';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    DashboardCard,
+    TheSidebar
+  },
+  data() {
+    return {
+      currentTimeFrame: null
+    }
+  },
+  computed: {
+    timeFrames() {
+      return timeFrames
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+@import './assets/colors.scss';
+
+body {
+  height: 100vh;
+  width: 100vw;
+  align-content: center;
+  margin: 0;
+  background-color: $very-dark-blue;
 }
+
+#app {
+  font-family: 'Rubik';
+  font-size: 14px;
+  font-weight: 300;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 1000px;
+  margin: 0 40px;
+  display: flex;
+}
+
+.sidebar-container {
+  flex: 0 0 25%;
+}
+
+.cards-container {
+  flex: 0 0 75%;
+  display: flex; 
+  flex-wrap: wrap;
+}
+
 </style>
